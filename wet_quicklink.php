@@ -1,8 +1,8 @@
 <?php
 
-$plugin['version'] = '4.6.0';
+$plugin['version'] = '4.8';
 $plugin['author'] = 'Robert Wetzlmayr';
-$plugin['author_uri'] = 'http://awasteofwords.com/help/wet_quicklink';
+$plugin['author_uri'] = 'https://wetzlmayr.at/';
 $plugin['description'] = 'Pick and insert site internal links into articles';
 $plugin['type'] = 3;
 $plugin['textpack'] = <<< EOT
@@ -109,7 +109,7 @@ function wet_quicklink_clutch($event, $step)
 	global $app_mode;
 	if ($app_mode == 'async') return;
 
-	echo script_js("?wet_rsrc=quicklink_js", SCRIPT_URL);
+	echo script_js("?wet_rsrc=quicklink_js", TEXTPATTERN_SCRIPT_URL);
 	gTxtScript(array(
 			'title',
 			'body',
@@ -174,7 +174,9 @@ function wet_quicklink_safe_key()
  */
 function wet_quicklink_js()
 {
-	while(@ob_end_clean());
+    if (ob_get_length()) {
+        while(@ob_end_clean());
+    }
 	header("Content-Type: text/javascript; charset=utf-8");
 	header("Expires: ".date("r", time() + 3600));
 	header("Cache-Control: public");
